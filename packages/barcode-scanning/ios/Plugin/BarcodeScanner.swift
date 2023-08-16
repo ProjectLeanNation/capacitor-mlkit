@@ -14,7 +14,7 @@ typealias MLKitBarcodeScanner = MLKitBarcodeScanning.BarcodeScanner
     public let plugin: BarcodeScannerPlugin
 
     private var cameraView: BarcodeScannerView?
-    private var scanCompletionHandler: (([Barcode]?, String?) -> Void)?
+    private var scanCompletionHandler: (([Barcode]?, UIImage?, String?) -> Void)?
 
     init(plugin: BarcodeScannerPlugin) {
         self.plugin = plugin
@@ -74,7 +74,7 @@ typealias MLKitBarcodeScanner = MLKitBarcodeScanning.BarcodeScanner
         }
     }
 
-    @objc public func scan(settings: ScanSettings, completion: @escaping (([Barcode]?, String?) -> Void)) {
+    @objc public func scan(settings: ScanSettings, completion: @escaping (([Barcode]?, UIImage?, String?) -> Void)) {
         self.stopScan()
 
         guard let webView = self.plugin.webView else {
@@ -90,7 +90,7 @@ typealias MLKitBarcodeScanner = MLKitBarcodeScanning.BarcodeScanner
                 self.cameraView = cameraView
             } catch let error {
                 CAPLog.print(error.localizedDescription, error)
-                completion(nil, error.localizedDescription)
+                completion(nil, nil, error.localizedDescription)
                 return
             }
         }
@@ -233,9 +233,9 @@ typealias MLKitBarcodeScanner = MLKitBarcodeScanning.BarcodeScanner
 }
 
 extension BarcodeScanner: BarcodeScannerViewDelegate {
-    public func onBarcodesDetected(barcodes: [Barcode], imageSize: CGSize) {
+    public func onBarcodesDetected(barcodes: [Barcode], image:UIImage, imageSize: CGSize) {
         if let scanCompletionHandler = self.scanCompletionHandler {
-            scanCompletionHandler(barcodes, nil)
+            scanCompletionHandler(barcodes, image, nil)
             self.stopScan()
         } else {
             for barcode in barcodes {
@@ -246,7 +246,7 @@ extension BarcodeScanner: BarcodeScannerViewDelegate {
 
     public func onCancel() {
         if let scanCompletionHandler = self.scanCompletionHandler {
-            scanCompletionHandler(nil, plugin.errorScanCanceled)
+            scanCompletionHandler(nil, nil, plugin.errorScanCanceled)
         }
         self.stopScan()
     }

@@ -85,7 +85,7 @@ public class BarcodeScannerPlugin: CAPPlugin {
                 barcodeResults.append(BarcodeScannerHelper.createBarcodeResultForBarcode(barcode, imageSize: nil))
             }
             call.resolve([
-                "barcodes": barcodeResults
+                "barcodes": barcodeResults,
             ])
         })
     }
@@ -106,7 +106,7 @@ public class BarcodeScannerPlugin: CAPPlugin {
                 call.reject(error.localizedDescription)
                 return
             }
-            self.implementation?.scan(settings: settings, completion: { barcodes, errorMessage in
+            self.implementation?.scan(settings: settings, completion: { barcodes, image, errorMessage in
                 if let errorMessage = errorMessage {
                     call.reject(errorMessage)
                     return
@@ -115,9 +115,23 @@ public class BarcodeScannerPlugin: CAPPlugin {
                 for barcode in barcodes ?? [] {
                     barcodeResults.append(BarcodeScannerHelper.createBarcodeResultForBarcode(barcode, imageSize: nil, scale: 1))
                 }
-                call.resolve([
-                    "barcodes": barcodeResults
-                ])
+                
+                if (image != nil) {
+                    let imageData = image!.pngData()!
+                    let encodedImage = imageData.base64EncodedString(options: Data.Base64EncodingOptions.lineLength64Characters)
+                    
+                    call.resolve([
+                        "barcodes": barcodeResults,
+                        "image": encodedImage
+                    ])
+                } else {
+                    call.resolve([
+                        "barcodes": barcodeResults,
+                        "image": ""
+                    ])
+                }
+                
+                
             })
         })
     }

@@ -1,7 +1,7 @@
 {
-  "name": "@capacitor-mlkit/barcode-scanning",
+  "name": "@projectleannation/capacitor-scanner",
   "version": "5.1.0",
-  "description": "Capacitor plugin for ML Kit Barcode scanning.",
+  "description": "Capacitor plugin for ML Kit Barcode & text scanning.",
   "main": "dist/plugin.cjs.js",
   "module": "dist/esm/index.js",
   "types": "dist/esm/index.d.ts",
@@ -18,21 +18,8 @@
   "homepage": "https://capawesome.io/",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/capawesome-team/capacitor-mlkit.git"
+    "url": "git+https://github.com/projectleannation/capacitor-mlkit.git"
   },
-  "bugs": {
-    "url": "https://github.com/capawesome-team/capacitor-mlkit.git/issues"
-  },
-  "funding": [
-    {
-      "type": "github",
-      "url": "https://github.com/sponsors/capawesome-team/"
-    },
-    {
-      "type": "opencollective",
-      "url": "https://opencollective.com/capawesome"
-    }
-  ],
   "keywords": [
     "capacitor",
     "plugin",

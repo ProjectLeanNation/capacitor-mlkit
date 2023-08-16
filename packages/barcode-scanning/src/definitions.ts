@@ -249,6 +249,11 @@ export interface ScanResult {
    * @since 0.0.1
    */
   barcodes: Barcode[];
+
+  /**
+   * The base64 encoded image of the scanned barcode.
+   */
+  image?: string;
 }
 
 /**
